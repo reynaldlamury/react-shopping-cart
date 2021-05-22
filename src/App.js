@@ -41,6 +41,7 @@ const Logo = styled.a`
   }
 `;
 
+// feature 1
 const App = () => {
   return (
     <GridContainer>
