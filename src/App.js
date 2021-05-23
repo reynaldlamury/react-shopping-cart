@@ -1,6 +1,8 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
 import './global.css';
+import data from './data.json';
+import Products from './components/Products';
 
 const GridContainer = styled.section`
   display: grid;
@@ -41,19 +43,53 @@ const Logo = styled.a`
   }
 `;
 
+const Content = styled.div`
+  background-color: #b0ff49;
+  display: flex;
+  /* flex-wrap: wrap; */
+`;
+
+const ContentMain = styled.div`
+  background-color: #5ef8f0;
+  flex: 3 60rem;
+`;
+
+const ContentSidebar = styled.div`
+  background-color: #ff8ef6;
+  flex: 1 20rem;
+`;
+
 // feature 1
-const App = () => {
-  return (
-    <GridContainer>
-      <Header>
-        <strong>
-          <Logo>React Shopping Cart</Logo>
-        </strong>
-      </Header>
-      <Main>Product List</Main>
-      <Footer>all right is reserved</Footer>
-    </GridContainer>
-  );
-};
+class App extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      products: data.products,
+      size: '',
+      sort: '',
+    };
+  }
+  render() {
+    return (
+      <GridContainer>
+        <Header>
+          <strong>
+            <Logo>React Shopping Cart</Logo>
+          </strong>
+          <h1>Jangan Lupa masukin mouse </h1>
+        </Header>
+        <Main>
+          <Content>
+            <ContentMain>
+              <Products products={this.state.products}></Products>
+            </ContentMain>
+            <ContentSidebar>sidebar content</ContentSidebar>
+          </Content>
+        </Main>
+        <Footer>all right is reserved</Footer>
+      </GridContainer>
+    );
+  }
+}
 
 export default App;
