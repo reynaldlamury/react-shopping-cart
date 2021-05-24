@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import formatCurrency from './utils';
+import formatCurrency from '../utils';
 
 const WrapperList = styled.ul`
   display: flex;

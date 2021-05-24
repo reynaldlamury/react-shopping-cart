@@ -21,8 +21,32 @@
       "image": "/images/dress3",
       "title": "Midi sundress with something special",
       "description": "This is for all the latest trends",
-      "availableSizes": ["XL", "XXL"],
+      "availableSizes": ["XL", "XXL", "M", "S"],
       "price": 50.5
+    },
+    {
+      "_id": "dress4",
+      "image": "/images/dress4",
+      "title": "anti-sun dress",
+      "description": "This is for all the latest trends",
+      "availableSizes": ["XL", "S", "L"],
+      "price": 30.5
+    },
+    {
+      "_id": "dress5",
+      "image": "/images/dress5",
+      "title": "Dress with nice color",
+      "description": "This is for all the latest trends",
+      "availableSizes": ["M", "XXL", "X"],
+      "price": 25.5
+    },
+    {
+      "_id": "dress6",
+      "image": "/images/dress6",
+      "title": "NIce Dress with nice touch",
+      "description": "This is for all the latest trends",
+      "availableSizes": ["XL", "XXL"],
+      "price": 40.5
     }
   ]
 }
