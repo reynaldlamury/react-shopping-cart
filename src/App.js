@@ -3,6 +3,7 @@ import styled, { css } from 'styled-components';
 import './global.css';
 import data from './data.json';
 import Products from './components/Products';
+import Filter from './components/Filter';
 
 const GridContainer = styled.section`
   display: grid;
@@ -52,6 +53,9 @@ const Content = styled.div`
 const ContentMain = styled.div`
   background-color: #5ef8f0;
   flex: 3 60rem;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
 `;
 
 const ContentSidebar = styled.div`
@@ -69,6 +73,42 @@ class App extends React.Component {
       sort: '',
     };
   }
+
+  filterProducts = (event) => {
+    if (event.target.value === '') {
+      this.setState({ size: event.target.value, products: data.products });
+    } else {
+      this.setState({
+        size: event.target.value,
+        products: data.products.filter(
+          (product) => product.availableSizes.indexOf(event.target.value) >= 0,
+        ),
+      });
+    }
+  };
+
+  sortProducts = (event) => {
+    const sort = event.target.value;
+    this.setState((state) => ({
+      sort: sort,
+      products: this.state.products
+        .slice()
+        .sort((a, b) =>
+          sort === 'lowest'
+            ? a.price > b.price
+              ? 1
+              : -1
+            : sort === 'highest'
+            ? a.price < b.price
+              ? 1
+              : -1
+            : a._id > b._id
+            ? 1
+            : -1,
+        ),
+    }));
+  };
+
   render() {
     return (
       <GridContainer>
@@ -76,11 +116,17 @@ class App extends React.Component {
           <strong>
             <Logo>React Shopping Cart</Logo>
           </strong>
-          <h1>Jangan Lupa masukin mouse </h1>
         </Header>
         <Main>
           <Content>
             <ContentMain>
+              <Filter
+                count={this.state.products.length}
+                size={this.state.size}
+                sort={this.state.sort}
+                filterProducts={this.filterProducts}
+                sortProducts={this.sortProducts}
+              ></Filter>
               <Products products={this.state.products}></Products>
             </ContentMain>
             <ContentSidebar>sidebar content</ContentSidebar>
