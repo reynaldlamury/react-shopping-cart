@@ -4,6 +4,7 @@ import './global.css';
 import data from './data.json';
 import Products from './components/Products';
 import Filter from './components/Filter';
+import SearchSection from './components/SearchSection';
 
 const GridContainer = styled.section`
   display: grid;
@@ -20,6 +21,8 @@ const Header = styled.header`
   grid-area: 'header';
   background-color: #5e42fc;
   padding: 0.5rem;
+  display: flex;
+  justify-content: space-between;
 `;
 
 const Main = styled.main`
@@ -39,6 +42,7 @@ const Footer = styled.footer`
 const Logo = styled.a`
   transition: all 0.4s ease-in-out;
   cursor: pointer;
+  flex: 2 19rem;
   &:hover {
     color: #ff9047;
   }
@@ -47,20 +51,16 @@ const Logo = styled.a`
 const Content = styled.div`
   background-color: #b0ff49;
   display: flex;
-  /* flex-wrap: wrap; */
 `;
 
 const ContentMain = styled.div`
   background-color: #5ef8f0;
-  flex: 3 60rem;
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: column;
+  flex: 3 50rem;
 `;
 
 const ContentSidebar = styled.div`
   background-color: #ff8ef6;
-  flex: 1 20rem;
+  flex: 2 20rem;
 `;
 
 // feature 1
@@ -71,18 +71,50 @@ class App extends React.Component {
       products: data.products,
       size: '',
       sort: '',
+      SearchisActive: false,
     };
   }
 
   filterProducts = (event) => {
+    const sort = this.state.sort;
     if (event.target.value === '') {
-      this.setState({ size: event.target.value, products: data.products });
+      this.setState({
+        size: event.target.value,
+        products: data.products.sort((a, b) =>
+          sort === 'lowest'
+            ? a.price > b.price
+              ? 1
+              : -1
+            : sort === 'highest'
+            ? a.price < b.price
+              ? 1
+              : -1
+            : a._id > b._id
+            ? 1
+            : -1,
+        ),
+      });
     } else {
       this.setState({
         size: event.target.value,
-        products: data.products.filter(
-          (product) => product.availableSizes.indexOf(event.target.value) >= 0,
-        ),
+        products: data.products
+          .filter(
+            (product) =>
+              product.availableSizes.indexOf(event.target.value) >= 0,
+          )
+          .sort((a, b) =>
+            sort === 'lowest'
+              ? a.price > b.price
+                ? 1
+                : -1
+              : sort === 'highest'
+              ? a.price < b.price
+                ? 1
+                : -1
+              : a._id > b._id
+              ? 1
+              : -1,
+          ),
       });
     }
   };
@@ -109,6 +141,10 @@ class App extends React.Component {
     }));
   };
 
+  // handleTyping = (event) => {
+  //   console.log(event.target.value);
+  // };
+
   render() {
     return (
       <GridContainer>
@@ -116,6 +152,7 @@ class App extends React.Component {
           <strong>
             <Logo>React Shopping Cart</Logo>
           </strong>
+          <SearchSection></SearchSection>
         </Header>
         <Main>
           <Content>
