@@ -4,14 +4,13 @@ import formatCurrency from '../utils';
 
 const WrapperList = styled.ul`
   display: flex;
+  flex-wrap: wrap;
   padding: 0;
   margin: 0;
   list-style-type: none;
   background-color: blueviolet;
 
   li {
-    flex: 1 1 29rem;
-    height: 47rem;
     padding: 1rem;
     margin: 1rem;
   }
@@ -22,31 +21,42 @@ const ProductItem = styled.div`
   padding: 10px;
   position: relative;
   transition: all ease-out 0.5s;
-  z-index: 10;
+  /* z-index: 1; */
+  width: 10rem;
+  height: 18rem;
+  &:hover {
+    background-color: teal;
+  }
 
   a {
     display: flex;
+    transition: all ease-in-out 0.3s;
     text-decoration: none;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: center;
+    color: #29036e;
+
+    &:hover {
+      text-decoration: underline;
+      color: #bbb8e7;
+    }
   }
 
   img {
     max-height: 220px;
     max-width: 170px;
   }
-
-  &:hover img {
-    transition: all ease-in 0.5s;
-    transform: translateX(4px);
-  }
 `;
 
 const Price = styled.div`
   background-color: #e7422f;
-  padding: 0.7rem;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 10rem;
+  padding: 0.5rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
