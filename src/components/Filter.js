@@ -38,14 +38,15 @@ export default class Filter extends Component {
         </Sort>
         <Size>
           Filter{' '}
-          <select value={this.props.size} onChange={this.props.filterProducts}>
+          <select
+            value={this.props.category}
+            onChange={this.props.filterProducts}
+          >
             <option value="">All</option>
-            <option value="XS">XS</option>
-            <option value="S">S</option>
-            <option value="M">M</option>
-            <option value="L">L</option>
-            <option value="XL">XL</option>
-            <option value="XXL">XXL</option>
+            <option value="men's clothing">men's clothing</option>
+            <option value="women's clothing">women's clothing</option>
+            <option value="jewelery">jewelery</option>
+            <option value="electronics">electronics</option>
           </select>
         </Size>
       </FilterSection>

@@ -1,95 +1,145 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import formatCurrency from '../utils';
+import { SearchContext } from '../searchContext';
+
+import FirstElement from './FirstElement';
+import { CustomScroll } from '../StyledGlobal';
+import { SearchProduct } from './SearchProduct';
 
 const MainList = styled.ul`
   background-color: tomato;
   color: white;
   list-style-type: none;
-  margin-bottom: 10px;
+  margin-bottom: 0px;
   margin-top: 0;
   z-index: 10;
   padding: 10px;
   padding-top: 0;
-`;
+  max-height: 700px;
+  max-width: 480px;
+  overflow-y: scroll;
+  transition: max-height ease-in-out 0.3s;
 
-const Item = styled.div`
-  background-color: #b1b100;
-  display: flex;
-  align-items: center;
-  margin: 8px;
-  margin-top: 0;
-  margin-left: 0;
-  margin-right: 0;
-  padding: 10px;
-  transition: all ease-in-out 0.2s;
-  cursor: pointer;
-
-  &:hover {
-    background-color: #e7e700;
+  &.noHeight {
+    max-height: 0;
   }
-
-  img {
-    width: 35px;
-    height: 55px;
-    margin-bottom: 10px;
-  }
+  ${CustomScroll}
 `;
 
-const Photo = styled.div`
-  background-color: blue;
-`;
+const Warning = styled.div`
+  background-color: salmon;
 
-const Information = styled.div`
-  flex: 2 50px;
-  background-color: chocolate;
-  color: white;
-  display: flex;
-  flex-direction: column;
-  margin: 0;
-  padding: 0;
-  font-size: 15px;
-
-  p,
   h3 {
-    margin: 10px;
-    padding: 0;
+    background-color: #ff4934;
+    border-radius: 6px;
+    padding: 5px;
+    padding-top: 20px;
+    color: white;
+    margin: 0;
+    font-weight: normal;
   }
 `;
 
-const Price = styled.div`
-  background-color: grey;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  font-weight: bold;
-  flex: auto;
-  height: 70px;
+const result = {
+  zIndex: '400',
+  backgroundColor: 'pink',
+  margin: 0,
+  padding: 10,
+  color: 'blue',
+};
+
+const InWarning = styled.div`
+  background-color: yellow;
+  padding: 10px;
+  font-weight: normal;
+
+  span {
+    font-weight: bold;
+    color: #22ff7e;
+  }
 `;
+
+// end of style
+// ====================================================================================
 
 export default class SubUI extends Component {
-  constructor() {
-    super();
-    this.count = 1;
-  }
+  static contextType = SearchContext;
   render() {
+    const filterText = this.context;
+    const products = this.props.products;
+
+    const rows = [];
+    const productInfo = [];
+
+    products.forEach((product) => {
+      if (product.title.toLowerCase().indexOf(filterText.toLowerCase()) >= 0) {
+        rows.push(null);
+        productInfo.push({
+          productID: product.id,
+          productTitle: product.title,
+          productImg: product.image,
+          productPrice: product.price,
+          productDesc: product.description,
+          productCategory: product.category,
+        });
+      }
+    });
+
+    let onlyOne = false;
+    let warning;
+    let firstElement;
+
+    if (rows.length === 1) {
+      onlyOne = true;
+      console.log(productInfo);
+      return (
+        <div>
+          <FirstElement
+            productInfo={productInfo}
+            result={productInfo.length}
+          ></FirstElement>
+          <h3 style={result}>
+            Search result: {productInfo.length} <span>product</span>
+          </h3>
+        </div>
+      );
+    } else if (rows.length === 0) {
+      warning = (
+        <InWarning>
+          <h3>Product you're looking for doesn't exist</h3>
+        </InWarning>
+      );
+    } else {
+      onlyOne = false;
+      warning = (
+        <InWarning>
+          <h3>
+            Search result: {rows.length} <span>products</span>
+          </h3>
+        </InWarning>
+      );
+      firstElement = rows.shift();
+    }
+
+    console.log('rows-length after shift:', rows.length);
     return (
-      <MainList>
-        {this.props.products.map((product) => (
-          <li key={product._id} count={product._id[product._id.length - 1]}>
-            <Item>
-              <Photo>
-                <img src={`${product.image}.jpg`} alt={product.title}></img>
-              </Photo>
-              <Information>
-                <h3> {product.title} </h3>
-                <p> {product.description} </p>
-              </Information>
-              <Price> {formatCurrency(product.price)} </Price>
-            </Item>
-          </li>
-        ))}
-      </MainList>
+      <div>
+        <MainList className={rows.length === 0 ? 'noHeight' : null}>
+          {onlyOne ? (
+            ''
+          ) : (
+            <FirstElement
+              fisrstElement={firstElement}
+              filterText={filterText}
+              productInfo={productInfo}
+            ></FirstElement>
+          )}
+          {productInfo.splice(1, productInfo.length).map((item) => (
+            <SearchProduct key={item.productID} product={item}></SearchProduct>
+          ))}
+        </MainList>
+        <Warning>{warning}</Warning>
+      </div>
     );
   }
 }
