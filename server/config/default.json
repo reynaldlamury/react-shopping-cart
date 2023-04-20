@@ -1,0 +1,4 @@
+{
+  "mongoURI": "mongodb+srv://Reynald:pegasus2010@cluster0.racrb.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
+  "jwtSecret": "ShopCart_myJwtSecret"
+}
